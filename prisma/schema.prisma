@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("admins")
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  // Customer info
+  name          String
+  email         String
+  phone         String
+  address       String
+  city          String
+  // Equipment
+  equipmentType String
+  equipmentMake String?
+  equipmentYear String?
+  // Job
+  services      String[] // list of selected services
+  issues        String   // free text description
+  preferredDate String   // date string from form
+  // Admin management
+  status        String   @default("pending") // pending | accepted | in_progress | completed | declined
+  adminNotes    String?
+  partsUsed     String?
+  laborHours    Float?
+  price         Float?
+  invoiceSent   Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("bookings")
+}

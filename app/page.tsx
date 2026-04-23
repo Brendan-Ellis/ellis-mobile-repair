@@ -1,65 +1,144 @@
-import Image from "next/image";
+import Link from 'next/link'
 
-export default function Home() {
+const SERVICES = [
+  { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'From $65' },
+  { name: 'Oil Change', desc: 'Drain and replace oil, check levels', price: 'From $25' },
+  { name: 'Blade Sharpening', desc: 'Remove, sharpen, and rebalance mower blades', price: 'From $20' },
+  { name: 'Spark Plug Replacement', desc: 'Replace spark plug(s) for reliable starting', price: 'From $15' },
+  { name: 'Carburetor Cleaning', desc: 'Clean or rebuild carburetor to fix starting/running issues', price: 'From $45' },
+  { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'From $35 + parts' },
+  { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'From $10' },
+  { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: 'Quote provided' },
+]
+
+const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Elkhorn, NE', 'Surrounding areas']
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div>
+            <p className="font-bold text-gray-900 text-lg leading-tight">Ellis Mobile Repair</p>
+            <p className="text-xs text-gray-500">Lawn Mower Service · We Come To You</p>
+          </div>
+          <Link
+            href="/book"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors"
+          >
+            Book Service
+          </Link>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <section className="bg-gray-900 text-white py-20 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-block bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wide">
+            Mobile Service · We Come To You
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
+            Lawn Mower Tune-Ups &<br />Repair At Your Door
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+            No trailers, no hassle. We bring the shop to you. Serving Council Bluffs, Omaha, and Elkhorn with fast, affordable mower service.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/book"
+              className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors"
+            >
+              Schedule Service
+            </Link>
+            <a
+              href="tel:+14027637375"
+              className="border border-gray-600 hover:border-gray-400 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors"
+            >
+              Call (402) 763-7375
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Why Us */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+            {[
+              { icon: '🚚', title: 'We Come To You', desc: 'No need to haul your mower anywhere. We show up at your home or property.' },
+              { icon: '⚡', title: 'Fast Turnaround', desc: 'Most tune-ups and minor repairs done on-site in under an hour.' },
+              { icon: '💰', title: 'Fair Pricing', desc: 'Upfront quotes before any work begins. No surprise charges.' },
+            ].map(item => (
+              <div key={item.title} className="p-6">
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="font-bold text-gray-900 text-lg mb-2">{item.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Services */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Services & Pricing</h2>
+            <p className="text-gray-500">Starting prices listed — final quote given before work begins.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {SERVICES.map(s => (
+              <div key={s.name} className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex justify-between items-start gap-4">
+                <div>
+                  <p className="font-semibold text-gray-900">{s.name}</p>
+                  <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
+                </div>
+                <span className="text-green-600 font-bold text-sm whitespace-nowrap">{s.price}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-sm text-gray-400 mt-6">Parts additional where applicable. Diagnostic fee may apply for complex issues.</p>
+        </div>
+      </section>
+
+      {/* Service Area */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Service Area</h2>
+          <p className="text-gray-500 mb-8">We currently serve the following areas. Not sure if we cover you? Give us a call.</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {AREAS.map(a => (
+              <span key={a} className="bg-green-50 border border-green-200 text-green-700 font-medium text-sm px-4 py-2 rounded-full">
+                {a}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 px-4 bg-gray-900 text-white text-center">
+        <div className="max-w-xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Ready to Book?</h2>
+          <p className="text-gray-400 mb-8">Fill out our quick booking form and we'll reach out to confirm your appointment.</p>
+          <Link
+            href="/book"
+            className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold px-10 py-4 rounded-xl text-lg transition-colors"
+          >
+            Book Service Now
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-950 text-gray-500 py-8 px-4 text-center text-sm">
+        <p className="font-semibold text-white mb-1">Ellis Mobile Repair</p>
+        <p>Council Bluffs, IA · Omaha, NE · Elkhorn, NE</p>
+        <p className="mt-2">
+          <a href="tel:+14027637375" className="hover:text-white transition-colors">(402) 763-7375</a>
+        </p>
+      </footer>
     </div>
-  );
+  )
 }
