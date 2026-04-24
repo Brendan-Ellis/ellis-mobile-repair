@@ -1,17 +1,62 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const SERVICES = [
-  { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'From $65' },
-  { name: 'Oil Change', desc: 'Drain and replace oil, check levels', price: 'From $25' },
-  { name: 'Blade Sharpening', desc: 'Remove, sharpen, and rebalance mower blades', price: 'From $20' },
-  { name: 'Spark Plug Replacement', desc: 'Replace spark plug(s) for reliable starting', price: 'From $15' },
-  { name: 'Carburetor Cleaning', desc: 'Clean or rebuild carburetor to fix starting/running issues', price: 'From $45' },
-  { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'From $35 + parts' },
-  { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'From $10' },
-  { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: 'Quote provided' },
+  {
+    name: 'Full Tune-Up',
+    desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection',
+    price: 'From $65',
+    photo: 'YhxOrHGrQQc',
+  },
+  {
+    name: 'Oil Change',
+    desc: 'Drain and replace oil, check levels',
+    price: 'From $25',
+    photo: '6bTHShbYDhY',
+  },
+  {
+    name: 'Blade Sharpening',
+    desc: 'Remove, sharpen, and rebalance mower blades',
+    price: 'From $20',
+    photo: 'bEGTsOCnHro',
+  },
+  {
+    name: 'Spark Plug Replacement',
+    desc: 'Replace spark plug(s) for reliable starting',
+    price: 'From $15',
+    photo: 'UZUzvJEvKnI',
+  },
+  {
+    name: 'Carburetor Cleaning',
+    desc: 'Clean or rebuild carburetor to fix starting/running issues',
+    price: 'From $45',
+    photo: 'xFjti9rYILo',
+  },
+  {
+    name: 'Belt Replacement',
+    desc: 'Replace worn drive or deck belts',
+    price: 'From $35 + parts',
+    photo: 'GXcSzWMags8',
+  },
+  {
+    name: 'Air Filter Replacement',
+    desc: 'Replace clogged air filter for better performance',
+    price: 'From $10',
+    photo: 'WyOOWptd7so',
+  },
+  {
+    name: 'Diagnostics & Minor Repair',
+    desc: 'Diagnose issues and handle minor fixes on the spot',
+    price: 'Quote provided',
+    photo: '9gB7APNSquE',
+  },
 ]
 
 const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Surrounding areas']
+
+function unsplash(id: string, w = 800) {
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`
+}
 
 export default function HomePage() {
   return (
@@ -33,30 +78,41 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section className="bg-gray-900 text-white py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-block bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wide">
-            Mobile Service · We Come To You
+      <section className="bg-gray-900 text-white">
+        <div className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div className="text-center lg:text-left">
+            <div className="inline-block bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wide">
+              Mobile Service · We Come To You
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
+              Lawn Mower Tune-Ups &<br />Repair At Your Door
+            </h1>
+            <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto lg:mx-0">
+              No trailers, no hassle. We bring the shop to you. Serving Council Bluffs and Omaha with fast, affordable mower service.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link
+                href="/book"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors"
+              >
+                Schedule Service
+              </Link>
+              <a
+                href="tel:+17123265651"
+                className="border border-gray-600 hover:border-gray-400 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors"
+              >
+                Call (712) 326-5651
+              </a>
+            </div>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
-            Lawn Mower Tune-Ups &<br />Repair At Your Door
-          </h1>
-          <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-            No trailers, no hassle. We bring the shop to you. Serving Council Bluffs and Omaha with fast, affordable mower service.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/book"
-              className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors"
-            >
-              Schedule Service
-            </Link>
-            <a
-              href="tel:+17123265651"
-              className="border border-gray-600 hover:border-gray-400 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors"
-            >
-              Call (712) 326-5651
-            </a>
+          <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden shadow-2xl">
+            <Image
+              src={unsplash('Vu1GaaPWyTI', 1200)}
+              alt="Lawn mower being serviced"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
       </section>
@@ -89,12 +145,22 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {SERVICES.map(s => (
-              <div key={s.name} className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex justify-between items-start gap-4">
-                <div>
-                  <p className="font-semibold text-gray-900">{s.name}</p>
-                  <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
+              <div key={s.name} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+                <div className="relative h-40 w-full">
+                  <Image
+                    src={unsplash(s.photo, 600)}
+                    alt={s.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-                <span className="text-green-600 font-bold text-sm whitespace-nowrap">{s.price}</span>
+                <div className="p-4 flex justify-between items-start gap-4 flex-1">
+                  <div>
+                    <p className="font-semibold text-gray-900">{s.name}</p>
+                    <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
+                  </div>
+                  <span className="text-green-600 font-bold text-sm whitespace-nowrap">{s.price}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -127,27 +193,27 @@ export default function HomePage() {
             {[
               {
                 q: 'Do I need to be home during the service?',
-                a: 'Not necessarily. As long as we can access your equipment and you\'ve provided the location details, we can often complete the job without you being present. We\'ll call or text when we\'re on our way and when the job is done.',
+                a: "Not necessarily. As long as we can access your equipment and you've provided the location details, we can often complete the job without you being present. We'll call or text when we're on our way and when the job is done.",
               },
               {
                 q: 'How long does a typical service take?',
-                a: 'Most tune-ups and minor repairs are completed in 1 hour or less on-site. More complex repairs like carburetor rebuilds or belt replacements may take longer. We\'ll give you an honest estimate upfront.',
+                a: "Most tune-ups and minor repairs are completed in 1 hour or less on-site. More complex repairs like carburetor rebuilds or belt replacements may take longer. We'll give you an honest estimate upfront.",
               },
               {
                 q: 'Do you charge a travel or trip fee?',
                 a: 'No trip fee for customers in our service area (Council Bluffs and Omaha). The price you\'re quoted covers parts and labor — no hidden travel charges.',
               },
               {
-                q: 'What if you can\'t fix it on the spot?',
-                a: 'If a repair requires parts we don\'t have on hand, we\'ll let you know right away. We can order the parts and schedule a return visit, or provide a full quote before any work begins.',
+                q: "What if you can't fix it on the spot?",
+                a: "If a repair requires parts we don't have on hand, we'll let you know right away. We can order the parts and schedule a return visit, or provide a full quote before any work begins.",
               },
               {
                 q: 'Do you work on riding mowers and zero-turns?',
-                a: 'Yes! We service push mowers, self-propelled mowers, riding mowers, zero-turn mowers, and tractors. If you\'re unsure, just give us a call and we\'ll let you know.',
+                a: "Yes! We service push mowers, self-propelled mowers, riding mowers, zero-turn mowers, and tractors. If you're unsure, just give us a call and we'll let you know.",
               },
               {
                 q: 'How do I know what the final price will be?',
-                a: 'We send you a quote before any work begins. You\'ll see the estimated total and can accept or decline — no surprise charges ever.',
+                a: "We send you a quote before any work begins. You'll see the estimated total and can accept or decline — no surprise charges ever.",
               },
             ].map(({ q, a }) => (
               <details key={q} className="bg-white rounded-2xl border border-gray-200 shadow-sm group">
