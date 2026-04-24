@@ -1,5 +1,19 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Ellis Mobile Repair | Lawn Mower Tune-Up & Repair — Council Bluffs & Omaha',
+  description: 'Mobile lawn mower repair and tune-up service serving Council Bluffs IA and Omaha NE. We come to you — no hauling required. Oil changes, blade sharpening, carburetor cleaning & more.',
+  keywords: 'lawn mower repair, mobile mower service, tune up, Council Bluffs, Omaha, mower repair near me',
+  openGraph: {
+    title: 'Ellis Mobile Repair | Lawn Mower Service at Your Door',
+    description: 'Mobile lawn mower repair serving Council Bluffs IA and Omaha NE. We come to you.',
+    url: 'https://www.ellismobilerepair.com',
+    siteName: 'Ellis Mobile Repair',
+    type: 'website',
+  },
+}
 
 const SERVICES = [
   { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'From $65', icon: '🔧' },
