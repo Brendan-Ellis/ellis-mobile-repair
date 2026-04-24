@@ -31,6 +31,7 @@ export async function submitBooking(prevState: { error?: string; success?: boole
   })
 
   await notifyAdminNewBooking(booking)
+  await sendSms(process.env.ADMIN_PHONE ?? '', `New booking request from ${booking.name} (${booking.phone}) — ${booking.services.join(', ')}. View: ${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://www.ellismobilerepair.com'}/admin`)
 
   return { success: true }
 }

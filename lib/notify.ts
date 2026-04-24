@@ -100,12 +100,23 @@ export async function notifyAdminQuoteResponse(booking: {
 }
 
 export async function sendSms(to: string, body: string) {
-  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE) return
+  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE) {
+    console.log('SMS skipped: missing Twilio env vars')
+    return
+  }
+  if (!to) {
+    console.log('SMS skipped: no recipient number')
+    return
+  }
   const url = `https://api.twilio.com/2010-04-01/Accounts/${process.env.TWILIO_ACCOUNT_SID}/Messages.json`
   const creds = Buffer.from(`${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`).toString('base64')
-  await fetch(url, {
+  const res = await fetch(url, {
     method: 'POST',
     headers: { Authorization: `Basic ${creds}`, 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ To: to, From: process.env.TWILIO_PHONE, Body: body }).toString(),
-  }).catch(() => {})
+  })
+  if (!res.ok) {
+    const err = await res.text()
+    console.error('Twilio error:', err)
+  }
 }
