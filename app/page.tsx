@@ -2,60 +2,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const SERVICES = [
-  {
-    name: 'Full Tune-Up',
-    desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection',
-    price: 'From $65',
-    photo: '1690068023694-053da714f95f',
-  },
-  {
-    name: 'Oil Change',
-    desc: 'Drain and replace oil, check levels',
-    price: 'From $25',
-    photo: '1701743802766-a982b2cc3d92',
-  },
-  {
-    name: 'Blade Sharpening',
-    desc: 'Remove, sharpen, and rebalance mower blades',
-    price: 'From $20',
-    photo: '1596552254354-3ba557926c98',
-  },
-  {
-    name: 'Spark Plug Replacement',
-    desc: 'Replace spark plug(s) for reliable starting',
-    price: 'From $15',
-    photo: '1523559094051-53bac879eb80',
-  },
-  {
-    name: 'Carburetor Cleaning',
-    desc: 'Clean or rebuild carburetor to fix starting/running issues',
-    price: 'From $45',
-    photo: '1661745805708-9c4a831545a7',
-  },
-  {
-    name: 'Belt Replacement',
-    desc: 'Replace worn drive or deck belts',
-    price: 'From $35 + parts',
-    photo: '1429772011165-0c2e054367b8',
-  },
-  {
-    name: 'Air Filter Replacement',
-    desc: 'Replace clogged air filter for better performance',
-    price: 'From $10',
-    photo: '1590820292118-e256c3ac2676',
-  },
-  {
-    name: 'Diagnostics & Minor Repair',
-    desc: 'Diagnose issues and handle minor fixes on the spot',
-    price: 'Quote provided',
-    photo: '1608101854678-b45ad1d25556',
-  },
+  { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'From $65', icon: '🔧' },
+  { name: 'Oil Change', desc: 'Drain and replace oil, check levels', price: 'From $25', icon: '🛢️' },
+  { name: 'Blade Sharpening', desc: 'Remove, sharpen, and rebalance mower blades', price: 'From $20', icon: '⚙️' },
+  { name: 'Spark Plug Replacement', desc: 'Replace spark plug(s) for reliable starting', price: 'From $15', icon: '⚡' },
+  { name: 'Carburetor Cleaning', desc: 'Clean or rebuild carburetor to fix starting/running issues', price: 'From $45', icon: '🔩' },
+  { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'From $35 + parts', icon: '🔄' },
+  { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'From $10', icon: '💨' },
+  { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: 'Quote provided', icon: '🔍' },
 ]
 
 const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Surrounding areas']
 
-function unsplash(id: string, w = 800) {
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`
+function heroImg(id: string) {
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=80`
 }
 
 export default function HomePage() {
@@ -107,7 +67,7 @@ export default function HomePage() {
           </div>
           <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden shadow-2xl">
             <Image
-              src={unsplash('1458245201577-fc8a130b8829', 1200)}
+              src={heroImg('1458245201577-fc8a130b8829')}
               alt="Lawn mower being serviced"
               fill
               className="object-cover"
@@ -145,21 +105,14 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {SERVICES.map(s => (
-              <div key={s.name} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
-                <div className="relative h-40 w-full">
-                  <Image
-                    src={unsplash(s.photo, 600)}
-                    alt={s.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-4 flex justify-between items-start gap-4 flex-1">
-                  <div>
+              <div key={s.name} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-4">
+                <div className="text-3xl w-10 flex-shrink-0">{s.icon}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start gap-2">
                     <p className="font-semibold text-gray-900">{s.name}</p>
-                    <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
+                    <span className="text-green-600 font-bold text-sm whitespace-nowrap">{s.price}</span>
                   </div>
-                  <span className="text-green-600 font-bold text-sm whitespace-nowrap">{s.price}</span>
+                  <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
                 </div>
               </div>
             ))}
