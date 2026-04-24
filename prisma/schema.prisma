@@ -38,9 +38,16 @@ model Booking {
   partsUsed     String?
   laborHours    Float?
   price         Float?
-  invoiceSent   Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  invoiceSent      Boolean   @default(false)
+  // Quote flow
+  quoteToken       String?   @unique
+  quoteAmount      Float?
+  quoteMessage     String?
+  quoteSentAt      DateTime?
+  quoteResponse    String?   // 'accepted' | 'declined'
+  quoteRespondedAt DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   @@map("bookings")
 }

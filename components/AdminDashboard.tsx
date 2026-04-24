@@ -3,10 +3,11 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Booking } from '@/app/generated/prisma/client'
-import { updateBookingStatus, updateBookingDetails, markInvoiceSent, deleteBooking } from '@/app/actions/booking'
+import { updateBookingStatus, updateBookingDetails, markInvoiceSent, deleteBooking, sendQuote } from '@/app/actions/booking'
 
 const STATUS_LABELS: Record<string, string> = {
   pending: 'Pending',
+  quote_sent: 'Quote Sent',
   accepted: 'Accepted',
   in_progress: 'In Progress',
   completed: 'Completed',
@@ -15,13 +16,14 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-700',
+  quote_sent: 'bg-orange-100 text-orange-700',
   accepted: 'bg-blue-100 text-blue-700',
   in_progress: 'bg-purple-100 text-purple-700',
   completed: 'bg-green-100 text-green-700',
   declined: 'bg-red-100 text-red-700',
 }
 
-const FILTERS = ['all', 'pending', 'accepted', 'in_progress', 'completed', 'declined']
+const FILTERS = ['all', 'pending', 'quote_sent', 'accepted', 'in_progress', 'completed', 'declined']
 
 export function AdminDashboard({
   bookings,
@@ -65,13 +67,18 @@ export function AdminDashboard({
               <div className="p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <p className="font-semibold text-gray-900">{b.name}</p>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${STATUS_COLORS[b.status]}`}>
                         {STATUS_LABELS[b.status]}
                       </span>
                       {b.invoiceSent && (
                         <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Invoice Sent</span>
+                      )}
+                      {b.quoteResponse && (
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${b.quoteResponse === 'accepted' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
+                          Quote {b.quoteResponse}
+                        </span>
                       )}
                     </div>
                     <p className="text-sm text-gray-500">{b.city} · {b.phone}</p>
@@ -83,6 +90,9 @@ export function AdminDashboard({
                     </div>
                     <p className="text-xs text-gray-500 mt-2 italic">"{b.issues}"</p>
                     <p className="text-xs text-gray-400 mt-1">Preferred: {b.preferredDate} · Submitted: {new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                    {b.quoteAmount != null && (
+                      <p className="text-xs text-gray-400 mt-0.5">Quote: <span className="font-semibold text-green-600">${Number(b.quoteAmount).toFixed(2)}</span></p>
+                    )}
                   </div>
                   <button
                     onClick={() => setSelected(b)}
@@ -110,6 +120,13 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
   const [laborHours, setLaborHours] = useState(String(booking.laborHours ?? ''))
   const [price, setPrice] = useState(String(booking.price ?? ''))
   const [saving, setSaving] = useState(false)
+
+  // Quote form state
+  const [showQuoteForm, setShowQuoteForm] = useState(false)
+  const [quoteAmount, setQuoteAmount] = useState(String(booking.quoteAmount ?? ''))
+  const [quoteMessage, setQuoteMessage] = useState(booking.quoteMessage ?? '')
+  const [sendingQuote, setSendingQuote] = useState(false)
+  const [quoteSent, setQuoteSent] = useState(false)
 
   function save() {
     setSaving(true)
@@ -152,6 +169,18 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
     })
   }
 
+  function handleSendQuote() {
+    if (!quoteAmount || parseFloat(quoteAmount) <= 0) return alert('Enter a valid quote amount.')
+    setSendingQuote(true)
+    startTransition(async () => {
+      await sendQuote(booking.id, parseFloat(quoteAmount), quoteMessage)
+      router.refresh()
+      setSendingQuote(false)
+      setQuoteSent(true)
+      setShowQuoteForm(false)
+    })
+  }
+
   const inputCls = 'w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 placeholder-gray-400'
 
   return (
@@ -177,6 +206,71 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
             <p><span className="text-gray-400">Preferred date:</span> <span className="text-gray-700">{booking.preferredDate}</span></p>
             <p><span className="text-gray-400">Services:</span> <span className="text-gray-700">{booking.services.join(', ')}</span></p>
             <p><span className="text-gray-400">Issue:</span> <span className="text-gray-700 italic">"{booking.issues}"</span></p>
+          </div>
+
+          {/* Quote section */}
+          <div className="border border-gray-200 rounded-xl overflow-hidden">
+            <div className="bg-gray-50 px-4 py-3 flex items-center justify-between">
+              <span className="text-sm font-semibold text-gray-700">Quote</span>
+              {booking.quoteResponse ? (
+                <span className={`text-xs font-medium px-2 py-1 rounded-full ${booking.quoteResponse === 'accepted' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
+                  Customer {booking.quoteResponse}
+                </span>
+              ) : booking.quoteSentAt ? (
+                <span className="text-xs text-orange-600 font-medium">Awaiting response</span>
+              ) : null}
+            </div>
+            <div className="p-4">
+              {quoteSent ? (
+                <p className="text-sm text-green-600 font-medium">Quote sent successfully!</p>
+              ) : booking.quoteSentAt && !showQuoteForm ? (
+                <div className="space-y-2 text-sm">
+                  <p><span className="text-gray-400">Amount:</span> <span className="font-bold text-green-600">${Number(booking.quoteAmount).toFixed(2)}</span></p>
+                  {booking.quoteMessage && <p className="text-gray-600 italic">"{booking.quoteMessage}"</p>}
+                  <button onClick={() => setShowQuoteForm(true)} className="text-xs text-blue-600 hover:text-blue-700 font-medium mt-1">
+                    Resend / Update Quote
+                  </button>
+                </div>
+              ) : showQuoteForm || !booking.quoteSentAt ? (
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Quote Amount ($) *</label>
+                    <input
+                      type="number"
+                      value={quoteAmount}
+                      onChange={e => setQuoteAmount(e.target.value)}
+                      min="0" step="0.01"
+                      placeholder="75.00"
+                      className={inputCls}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Message to Customer (optional)</label>
+                    <textarea
+                      rows={3}
+                      value={quoteMessage}
+                      onChange={e => setQuoteMessage(e.target.value)}
+                      placeholder="e.g. Includes oil change and blade sharpening. Parts may be extra if carburetor needs rebuild."
+                      className={inputCls + ' resize-none'}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleSendQuote}
+                      disabled={sendingQuote}
+                      className="flex-1 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition-colors disabled:opacity-60"
+                    >
+                      {sendingQuote ? 'Sending…' : 'Send Quote via Email & SMS'}
+                    </button>
+                    {showQuoteForm && (
+                      <button onClick={() => setShowQuoteForm(false)} className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-500 text-sm hover:bg-gray-50">
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
 
           {/* Status */}
