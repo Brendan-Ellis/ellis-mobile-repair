@@ -117,6 +117,53 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'Do I need to be home during the service?',
+                a: 'Not necessarily. As long as we can access your equipment and you\'ve provided the location details, we can often complete the job without you being present. We\'ll call or text when we\'re on our way and when the job is done.',
+              },
+              {
+                q: 'How long does a typical service take?',
+                a: 'Most tune-ups and minor repairs are completed in 1 hour or less on-site. More complex repairs like carburetor rebuilds or belt replacements may take longer. We\'ll give you an honest estimate upfront.',
+              },
+              {
+                q: 'Do you charge a travel or trip fee?',
+                a: 'No trip fee for customers in our service area (Council Bluffs and Omaha). The price you\'re quoted covers parts and labor — no hidden travel charges.',
+              },
+              {
+                q: 'What if you can\'t fix it on the spot?',
+                a: 'If a repair requires parts we don\'t have on hand, we\'ll let you know right away. We can order the parts and schedule a return visit, or provide a full quote before any work begins.',
+              },
+              {
+                q: 'Do you work on riding mowers and zero-turns?',
+                a: 'Yes! We service push mowers, self-propelled mowers, riding mowers, zero-turn mowers, and tractors. If you\'re unsure, just give us a call and we\'ll let you know.',
+              },
+              {
+                q: 'How do I know what the final price will be?',
+                a: 'We send you a quote before any work begins. You\'ll see the estimated total and can accept or decline — no surprise charges ever.',
+              },
+            ].map(({ q, a }) => (
+              <details key={q} className="bg-white rounded-2xl border border-gray-200 shadow-sm group">
+                <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-semibold text-gray-900">
+                  {q}
+                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0 ml-3 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <p className="px-5 pb-5 text-gray-500 text-sm leading-relaxed">{a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-16 px-4 bg-gray-900 text-white text-center">
         <div className="max-w-xl mx-auto">
