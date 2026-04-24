@@ -5,7 +5,7 @@ const publicRoutes = ['/', '/login', '/book', '/book/success']
 
 export default async function proxy(req: NextRequest) {
   const path = req.nextUrl.pathname
-  const isPublic = publicRoutes.includes(path) || path.startsWith('/quote/')
+  const isPublic = publicRoutes.includes(path) || path.startsWith('/quote/') || path === '/sitemap.xml' || path === '/robots.txt'
 
   const token = req.cookies.get('ems-session')?.value
   const session = await decrypt(token)
