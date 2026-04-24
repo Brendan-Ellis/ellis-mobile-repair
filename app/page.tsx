@@ -6,49 +6,49 @@ const SERVICES = [
     name: 'Full Tune-Up',
     desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection',
     price: 'From $65',
-    photo: 'YhxOrHGrQQc',
+    photo: '1690068023694-053da714f95f',
   },
   {
     name: 'Oil Change',
     desc: 'Drain and replace oil, check levels',
     price: 'From $25',
-    photo: '6bTHShbYDhY',
+    photo: '1775590766345-c117265f0c1b',
   },
   {
     name: 'Blade Sharpening',
     desc: 'Remove, sharpen, and rebalance mower blades',
     price: 'From $20',
-    photo: 'bEGTsOCnHro',
+    photo: '1625047509248-ec889cbff17f',
   },
   {
     name: 'Spark Plug Replacement',
     desc: 'Replace spark plug(s) for reliable starting',
     price: 'From $15',
-    photo: 'UZUzvJEvKnI',
+    photo: '1615906655593-ad0386982a0f',
   },
   {
     name: 'Carburetor Cleaning',
     desc: 'Clean or rebuild carburetor to fix starting/running issues',
     price: 'From $45',
-    photo: 'xFjti9rYILo',
+    photo: '1661745805708-9c4a831545a7',
   },
   {
     name: 'Belt Replacement',
     desc: 'Replace worn drive or deck belts',
     price: 'From $35 + parts',
-    photo: 'GXcSzWMags8',
+    photo: '1429772011165-0c2e054367b8',
   },
   {
     name: 'Air Filter Replacement',
     desc: 'Replace clogged air filter for better performance',
     price: 'From $10',
-    photo: 'WyOOWptd7so',
+    photo: '1590820292118-e256c3ac2676',
   },
   {
     name: 'Diagnostics & Minor Repair',
     desc: 'Diagnose issues and handle minor fixes on the spot',
     price: 'Quote provided',
-    photo: '9gB7APNSquE',
+    photo: '1608101854678-b45ad1d25556',
   },
 ]
 
@@ -107,7 +107,7 @@ export default function HomePage() {
           </div>
           <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden shadow-2xl">
             <Image
-              src={unsplash('Vu1GaaPWyTI', 1200)}
+              src={unsplash('1458245201577-fc8a130b8829', 1200)}
               alt="Lawn mower being serviced"
               fill
               className="object-cover"
