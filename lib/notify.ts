@@ -1,6 +1,8 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY ?? 'placeholder')
+}
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'bellis@ellismobilerepair.com'
 const FROM = 'Ellis Mobile Repair <noreply@ellismobilerepair.com>'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://www.ellismobilerepair.com'
@@ -16,7 +18,7 @@ export async function notifyAdminNewBooking(booking: {
   preferredDate: string
 }) {
   if (!process.env.RESEND_API_KEY) return
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: ADMIN_EMAIL,
     subject: `New Booking Request — ${booking.name}`,
@@ -47,7 +49,7 @@ export async function sendQuoteEmail(booking: {
   if (!process.env.RESEND_API_KEY) return
   const acceptUrl = `${BASE_URL}/quote/${booking.quoteToken}?response=accepted`
   const declineUrl = `${BASE_URL}/quote/${booking.quoteToken}?response=declined`
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: booking.email,
     subject: `Your Service Quote — Ellis Mobile Repair`,
