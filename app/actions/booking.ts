@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { verifyAdmin } from '@/lib/dal'
-import { notifyAdminNewBooking, sendQuoteEmail, sendSms } from '@/lib/notify'
+import { notifyAdminNewBooking, sendQuoteEmail, sendSms, notifyAdminQuoteResponse } from '@/lib/notify'
 import { randomBytes } from 'crypto'
 
 export async function submitBooking(prevState: { error?: string; success?: boolean } | undefined, formData: FormData) {
@@ -102,6 +102,15 @@ export async function respondToQuote(token: string, response: 'accepted' | 'decl
       quoteRespondedAt: new Date(),
       status: response === 'accepted' ? 'accepted' : 'declined',
     },
+  })
+
+  await notifyAdminQuoteResponse({
+    name: booking.name,
+    phone: booking.phone,
+    email: booking.email,
+    services: booking.services,
+    quoteAmount: Number(booking.quoteAmount ?? 0),
+    quoteResponse: response,
   })
 
   if (response === 'accepted') {

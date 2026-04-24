@@ -72,6 +72,33 @@ export async function sendQuoteEmail(booking: {
   }).catch(() => {})
 }
 
+export async function notifyAdminQuoteResponse(booking: {
+  name: string
+  phone: string
+  email: string
+  services: string[]
+  quoteAmount: number
+  quoteResponse: string
+}) {
+  if (!process.env.RESEND_API_KEY) return
+  const accepted = booking.quoteResponse === 'accepted'
+  await getResend().emails.send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `Quote ${accepted ? 'Accepted ✅' : 'Declined ❌'} — ${booking.name}`,
+    html: `
+      <h2>Quote ${accepted ? 'Accepted' : 'Declined'}</h2>
+      <p><strong>${booking.name}</strong> has ${accepted ? 'accepted' : 'declined'} the quote.</p>
+      <p><strong>Phone:</strong> ${booking.phone}</p>
+      <p><strong>Email:</strong> ${booking.email}</p>
+      <p><strong>Services:</strong> ${booking.services.join(', ')}</p>
+      <p><strong>Quote Amount:</strong> $${booking.quoteAmount.toFixed(2)}</p>
+      ${accepted ? `<p style="color:#16a34a;font-weight:600;">Give them a call to confirm the appointment!</p>` : `<p style="color:#6b7280;">You may want to follow up to see if they have any questions.</p>`}
+      <p><a href="${BASE_URL}/admin" style="background:#16a34a;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;display:inline-block;margin-top:12px;">View in Admin</a></p>
+    `,
+  }).catch(() => {})
+}
+
 export async function sendSms(to: string, body: string) {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE) return
   const url = `https://api.twilio.com/2010-04-01/Accounts/${process.env.TWILIO_ACCOUNT_SID}/Messages.json`
