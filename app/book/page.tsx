@@ -17,7 +17,7 @@ const SERVICES = [
   'Diagnostics & Minor Repair',
 ]
 
-const CITIES = ['Council Bluffs, IA', 'Omaha, NE', 'Elkhorn, NE', 'Other']
+const CITIES = ['Council Bluffs, IA', 'Omaha, NE', 'Other']
 
 const inputCls = 'w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-400'
 
@@ -34,7 +34,7 @@ export default function BookPage() {
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="font-bold text-gray-900">Ellis Mobile Repair</Link>
-          <a href="tel:+14027637375" className="text-sm text-green-600 font-medium">(402) 763-7375</a>
+          <a href="tel:+17123265651" className="text-sm text-green-600 font-medium">(712) 326-5651</a>
         </div>
       </header>
 

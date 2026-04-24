@@ -11,7 +11,7 @@ export default function SuccessPage() {
         </p>
         <p className="text-sm text-gray-400 mb-8">
           Questions? Call us at{' '}
-          <a href="tel:+14027637375" className="text-green-600 font-medium">(402) 763-7375</a>
+          <a href="tel:+17123265651" className="text-green-600 font-medium">(712) 326-5651</a>
         </p>
         <Link
           href="/"

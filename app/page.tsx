@@ -11,7 +11,7 @@ const SERVICES = [
   { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: 'Quote provided' },
 ]
 
-const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Elkhorn, NE', 'Surrounding areas']
+const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Surrounding areas']
 
 export default function HomePage() {
   return (
@@ -42,7 +42,7 @@ export default function HomePage() {
             Lawn Mower Tune-Ups &<br />Repair At Your Door
           </h1>
           <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-            No trailers, no hassle. We bring the shop to you. Serving Council Bluffs, Omaha, and Elkhorn with fast, affordable mower service.
+            No trailers, no hassle. We bring the shop to you. Serving Council Bluffs and Omaha with fast, affordable mower service.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -52,10 +52,10 @@ export default function HomePage() {
               Schedule Service
             </Link>
             <a
-              href="tel:+14027637375"
+              href="tel:+17123265651"
               className="border border-gray-600 hover:border-gray-400 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors"
             >
-              Call (402) 763-7375
+              Call (712) 326-5651
             </a>
           </div>
         </div>
@@ -134,9 +134,9 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-gray-950 text-gray-500 py-8 px-4 text-center text-sm">
         <p className="font-semibold text-white mb-1">Ellis Mobile Repair</p>
-        <p>Council Bluffs, IA · Omaha, NE · Elkhorn, NE</p>
+        <p>Council Bluffs, IA · Omaha, NE</p>
         <p className="mt-2">
-          <a href="tel:+14027637375" className="hover:text-white transition-colors">(402) 763-7375</a>
+          <a href="tel:+17123265651" className="hover:text-white transition-colors">(712) 326-5651</a>
         </p>
       </footer>
     </div>
