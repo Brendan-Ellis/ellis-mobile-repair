@@ -3,6 +3,8 @@ import { respondToQuote } from '@/app/actions/booking'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
+
 export default async function QuotePage({
   params,
   searchParams,

@@ -104,6 +104,7 @@ export async function respondToQuote(token: string, response: 'accepted' | 'decl
     },
   })
 
+  revalidatePath(`/quote/${token}`)
   await notifyAdminQuoteResponse({
     name: booking.name,
     phone: booking.phone,
