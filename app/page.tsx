@@ -12,19 +12,19 @@ const SERVICES = [
     name: 'Oil Change',
     desc: 'Drain and replace oil, check levels',
     price: 'From $25',
-    photo: '1775590766345-c117265f0c1b',
+    photo: '1701743802766-a982b2cc3d92',
   },
   {
     name: 'Blade Sharpening',
     desc: 'Remove, sharpen, and rebalance mower blades',
     price: 'From $20',
-    photo: '1625047509248-ec889cbff17f',
+    photo: '1596552254354-3ba557926c98',
   },
   {
     name: 'Spark Plug Replacement',
     desc: 'Replace spark plug(s) for reliable starting',
     price: 'From $15',
-    photo: '1615906655593-ad0386982a0f',
+    photo: '1523559094051-53bac879eb80',
   },
   {
     name: 'Carburetor Cleaning',
