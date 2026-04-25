@@ -115,19 +115,19 @@ export async function respondToQuote(token: string, response: 'accepted' | 'decl
     },
   })
 
-  revalidatePath(`/quote/${token}`)
-  await notifyAdminQuoteResponse({
+  // Fire notifications in background — don't let them block or crash the redirect
+  notifyAdminQuoteResponse({
     name: booking.name,
     phone: booking.phone,
     email: booking.email,
     services: booking.services,
     quoteAmount: Number(booking.quoteAmount ?? 0),
     quoteResponse: response,
-  })
+  }).catch(() => {})
 
   if (response === 'accepted') {
     const smsBody = `${booking.name} accepted the quote for $${booking.quoteAmount?.toFixed(2)}. Call to confirm: ${booking.phone}`
-    await sendSms(process.env.ADMIN_PHONE ?? '', smsBody)
+    sendSms(process.env.ADMIN_PHONE ?? '', smsBody).catch(() => {})
   }
 
   return { success: true, response }
