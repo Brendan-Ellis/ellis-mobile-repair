@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import type { Booking } from '@/app/generated/prisma/client'
 import { updateBookingStatus, updateBookingDetails, markInvoiceSent, deleteBooking, sendQuote } from '@/app/actions/booking'
 
@@ -318,11 +319,16 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
             </button>
           </div>
 
-          <div className="flex gap-3 pt-1 border-t border-gray-100">
+          <div className="flex gap-3 pt-1 border-t border-gray-100 flex-wrap">
             {!booking.invoiceSent && (
               <button onClick={sendInvoice} className="text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors">
                 Mark Invoice Sent
               </button>
+            )}
+            {booking.customerId && (
+              <Link href={`/admin/customers/${booking.customerId}`} className="text-xs text-green-600 hover:text-green-700 font-medium transition-colors">
+                View Customer →
+              </Link>
             )}
             <button onClick={remove} className="text-xs text-red-500 hover:text-red-700 transition-colors ml-auto">
               Delete Booking

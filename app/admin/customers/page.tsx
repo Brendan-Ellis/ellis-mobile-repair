@@ -1,27 +1,16 @@
 import { verifyAdmin } from '@/lib/dal'
 import { prisma } from '@/lib/prisma'
 import { logout } from '@/app/actions/auth'
-import { AdminDashboard } from '@/components/AdminDashboard'
 import { AdminNav } from '@/components/AdminNav'
+import { CustomersClient } from '@/components/CustomersClient'
 
-export default async function AdminPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
+export default async function CustomersPage() {
   await verifyAdmin()
-  const params = await searchParams
-  const statusFilter = params.status ?? 'all'
 
-  const bookings = await prisma.booking.findMany({
-    where: statusFilter !== 'all' ? { status: statusFilter } : undefined,
+  const customers = await prisma.customer.findMany({
     orderBy: { createdAt: 'desc' },
+    include: { equipment: { include: { serviceRecords: true } } },
   })
-
-  const counts = await prisma.booking.groupBy({
-    by: ['status'],
-    _count: true,
-  })
-  const total = await prisma.booking.count()
-
-  const statusCounts: Record<string, number> = { all: total }
-  for (const c of counts) statusCounts[c.status] = c._count
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -36,10 +25,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </button>
         </form>
       </header>
-
       <main className="max-w-5xl mx-auto px-4 py-6">
         <AdminNav />
-        <AdminDashboard bookings={bookings} statusCounts={statusCounts} currentFilter={statusFilter} />
+        <CustomersClient customers={customers} />
       </main>
     </div>
   )

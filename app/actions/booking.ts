@@ -26,8 +26,18 @@ export async function submitBooking(prevState: { error?: string; success?: boole
     return { error: 'Please select at least one service.' }
   }
 
+  // Auto-match or create customer record
+  let customer = await prisma.customer.findFirst({
+    where: { OR: [{ phone }, { email }] },
+  })
+  if (!customer) {
+    customer = await prisma.customer.create({
+      data: { id: randomBytes(12).toString('hex'), name, email, phone, address, city },
+    })
+  }
+
   const booking = await prisma.booking.create({
-    data: { name, email, phone, address, city, equipmentType, equipmentMake, equipmentYear, services, issues, preferredDate },
+    data: { name, email, phone, address, city, equipmentType, equipmentMake, equipmentYear, services, issues, preferredDate, customerId: customer.id },
   })
 
   await notifyAdminNewBooking(booking)

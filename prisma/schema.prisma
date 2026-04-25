@@ -46,8 +46,56 @@ model Booking {
   quoteSentAt      DateTime?
   quoteResponse    String?   // 'accepted' | 'declined'
   quoteRespondedAt DateTime?
+  customerId       String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
   @@map("bookings")
+}
+
+model Customer {
+  id        String      @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  city      String?
+  notes     String?
+  createdAt DateTime    @default(now())
+  equipment Equipment[]
+
+  @@map("customers")
+}
+
+model Equipment {
+  id             String          @id @default(cuid())
+  customerId     String
+  customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  type           String
+  make           String?
+  model          String?
+  serialNumber   String?
+  engineHours    Float?
+  notes          String?
+  createdAt      DateTime        @default(now())
+  serviceRecords ServiceRecord[]
+
+  @@map("equipment")
+}
+
+model ServiceRecord {
+  id          String    @id @default(cuid())
+  equipmentId String
+  equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  date        String
+  engineHours Float?
+  services    String[]
+  checklist   Json?
+  partsUsed   String?
+  notes       String?
+  laborHours  Float?
+  price       Float?
+  createdAt   DateTime  @default(now())
+
+  @@map("service_records")
 }

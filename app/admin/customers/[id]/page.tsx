@@ -1,27 +1,26 @@
 import { verifyAdmin } from '@/lib/dal'
 import { prisma } from '@/lib/prisma'
 import { logout } from '@/app/actions/auth'
-import { AdminDashboard } from '@/components/AdminDashboard'
 import { AdminNav } from '@/components/AdminNav'
+import { CustomerDetail } from '@/components/CustomerDetail'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
 
-export default async function AdminPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
+export default async function CustomerPage({ params }: { params: Promise<{ id: string }> }) {
   await verifyAdmin()
-  const params = await searchParams
-  const statusFilter = params.status ?? 'all'
+  const { id } = await params
 
-  const bookings = await prisma.booking.findMany({
-    where: statusFilter !== 'all' ? { status: statusFilter } : undefined,
-    orderBy: { createdAt: 'desc' },
+  const customer = await prisma.customer.findUnique({
+    where: { id },
+    include: {
+      equipment: {
+        orderBy: { createdAt: 'desc' },
+        include: { serviceRecords: { orderBy: { date: 'desc' } } },
+      },
+    },
   })
 
-  const counts = await prisma.booking.groupBy({
-    by: ['status'],
-    _count: true,
-  })
-  const total = await prisma.booking.count()
-
-  const statusCounts: Record<string, number> = { all: total }
-  for (const c of counts) statusCounts[c.status] = c._count
+  if (!customer) notFound()
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -36,10 +35,14 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </button>
         </form>
       </header>
-
       <main className="max-w-5xl mx-auto px-4 py-6">
         <AdminNav />
-        <AdminDashboard bookings={bookings} statusCounts={statusCounts} currentFilter={statusFilter} />
+        <div className="mb-4">
+          <Link href="/admin/customers" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+            ← Back to Customers
+          </Link>
+        </div>
+        <CustomerDetail customer={customer} />
       </main>
     </div>
   )
