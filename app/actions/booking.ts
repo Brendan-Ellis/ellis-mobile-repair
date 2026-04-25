@@ -101,6 +101,13 @@ export async function sendQuote(bookingId: string, amount: number, message: stri
   revalidatePath('/admin')
 }
 
+export async function markQuoteViewed(token: string) {
+  await prisma.booking.updateMany({
+    where: { quoteToken: token, quoteViewedAt: null },
+    data: { quoteViewedAt: new Date() },
+  })
+}
+
 export async function respondToQuote(token: string, response: 'accepted' | 'declined') {
   const booking = await prisma.booking.findUnique({ where: { quoteToken: token } })
   if (!booking) return { error: 'Quote not found.' }

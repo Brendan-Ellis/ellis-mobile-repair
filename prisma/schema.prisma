@@ -44,6 +44,7 @@ model Booking {
   quoteAmount      Float?
   quoteMessage     String?
   quoteSentAt      DateTime?
+  quoteViewedAt    DateTime?
   quoteResponse    String?   // 'accepted' | 'declined'
   quoteRespondedAt DateTime?
   customerId       String?

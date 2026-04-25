@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { respondToQuote } from '@/app/actions/booking'
+import { respondToQuote, markQuoteViewed } from '@/app/actions/booking'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -29,6 +29,9 @@ export default async function QuotePage({
       </div>
     )
   }
+
+  // Record first view
+  await markQuoteViewed(token)
 
   // Handle accept/decline from email link
   if (response === 'accepted' || response === 'declined') {
