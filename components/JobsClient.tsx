@@ -847,12 +847,13 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
 function SquareChargeLink({ selected }: { selected: Booking }) {
   const amount = selected.grandTotal ?? selected.quoteAmount ?? 0
   const amountCents = Math.round(amount * 100)
+  const notes = `${selected.name} - ${selected.equipmentType}`.replace(/[^\x00-\xFF]/g, '')
   const data = JSON.stringify({
     amount_money: { amount: amountCents, currency_code: 'USD' },
     callback_url: 'https://www.ellismobilerepair.com/admin/jobs',
     client_id: 'sq0idp-DhkCsL0SXRUm7ci0ovToxA',
     version: '1.3',
-    notes: `${selected.name} — ${selected.equipmentType}`,
+    notes,
   })
   const encoded = btoa(data)
   const url = `square-commerce-v1://payment/create?data=${encoded}`
