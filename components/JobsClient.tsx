@@ -101,6 +101,7 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
   const [paymentMethod, setPaymentMethod] = useState('cash')
   const [quoteSent, setQuoteSent] = useState(false)
   const [toast, setToast] = useState('')
+  const [sendingPayment, setSendingPayment] = useState(false)
 
   function showToast(msg: string) {
     setToast(msg)
@@ -633,17 +634,22 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                           </div>
                         ) : (
                           <button
-                            onClick={() => {
-                              startTransition(async () => {
+                            onClick={async () => {
+                              setSendingPayment(true)
+                              try {
                                 const url = await sendPaymentRequest(selected.id)
                                 setPaymentLink(url)
                                 showToast('Payment request sent!')
-                              })
+                              } catch {
+                                showToast('Failed — check Square credentials.')
+                              } finally {
+                                setSendingPayment(false)
+                              }
                             }}
-                            disabled={isPending}
+                            disabled={sendingPayment}
                             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold disabled:opacity-40"
                           >
-                            Send Payment Request
+                            {sendingPayment ? 'Sending...' : 'Send Payment Request'}
                           </button>
                         )}
                         <p className="text-xs text-blue-500">Email sent automatically when job is marked complete. Copy link to text them.</p>
