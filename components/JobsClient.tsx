@@ -650,10 +650,6 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                       </div>
                     )}
 
-                    {/* Square tap-to-pay button */}
-                    <SquareChargeLink selected={selected} />
-                    <p className="text-xs text-gray-400 text-center">Opens Square app on your iPhone — tap card, done. Then mark paid below.</p>
-
                     <div className="flex items-center gap-2 flex-wrap">
                       <select
                         value={paymentMethod}
@@ -844,27 +840,6 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
   )
 }
 
-function SquareChargeLink({ selected }: { selected: Booking }) {
-  const amount = selected.grandTotal ?? selected.quoteAmount ?? 0
-  const amountCents = Math.round(amount * 100)
-  const data = JSON.stringify({
-    amount_money: { amount: amountCents, currency_code: 'USD' },
-    callback_url: 'https://www.ellismobilerepair.com/admin/jobs',
-    client_id: 'sq0idp-DhkCsL0SXRUm7ci0ovToxA',
-    version: '1.3',
-    notes: `${selected.name} - ${selected.equipmentType}`,
-    options: {
-      supported_tender_types: ['CREDIT_CARD', 'DEBIT_CARD', 'SQUARE_GIFT_CARD', 'CASH', 'OTHER'],
-      auto_return: false,
-    },
-  })
-  const url = `square-commerce-v1://payment/create?data=${encodeURIComponent(data)}`
-  return (
-    <a href={url} className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-2">
-      ⚡ Charge ${amount.toFixed(2)} with Square
-    </a>
-  )
-}
 
 function isQuoteExpired(sentAt: Date | null): boolean {
   if (!sentAt) return false
