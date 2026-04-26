@@ -75,13 +75,19 @@ export function CustomersClient({ customers }: { customers: CustomerWithEquipmen
                     {c.equipment.length} mower{c.equipment.length !== 1 ? 's' : ''} · {totalJobs} service{totalJobs !== 1 ? 's' : ''}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap justify-end">
                   <button
                     onClick={() => handleDelete(c.id, c.name)}
                     className="text-xs text-red-400 hover:text-red-600 transition-colors"
                   >
                     Delete
                   </button>
+                  <Link
+                    href={`/admin/jobs?customerId=${c.id}`}
+                    className="text-xs font-medium text-green-700 border border-green-200 bg-green-50 rounded-lg px-3 py-1.5 hover:bg-green-100 transition-colors"
+                  >
+                    + New Job
+                  </Link>
                   <Link
                     href={`/admin/customers/${c.id}`}
                     className="text-xs font-medium text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors"

@@ -16,31 +16,30 @@ export const metadata: Metadata = {
 }
 
 const SERVICES = [
-  { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'From $65', icon: '🔧' },
-  { name: 'Oil Change', desc: 'Drain and replace oil, check levels', price: 'From $25', icon: '🛢️' },
-  { name: 'Blade Sharpening', desc: 'Remove, sharpen, and rebalance mower blades', price: 'From $20', icon: '⚙️' },
-  { name: 'Spark Plug Replacement', desc: 'Replace spark plug(s) for reliable starting', price: 'From $15', icon: '⚡' },
-  { name: 'Carburetor Cleaning', desc: 'Clean or rebuild carburetor to fix starting/running issues', price: 'From $45', icon: '🔩' },
-  { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'From $35 + parts', icon: '🔄' },
-  { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'From $10', icon: '💨' },
+  { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'Quote provided', icon: '🔧' },
+  { name: 'Oil Change', desc: 'Drain and replace oil, check levels', price: 'Quote provided', icon: '🛢️' },
+  { name: 'Blade Sharpening', desc: 'Remove, sharpen, and rebalance mower blades', price: 'Quote provided', icon: '⚙️' },
+  { name: 'Spark Plug Replacement', desc: 'Replace spark plug(s) for reliable starting', price: 'Quote provided', icon: '⚡' },
+  { name: 'Carburetor Cleaning', desc: 'Clean or rebuild carburetor to fix starting/running issues', price: 'Quote provided', icon: '🔩' },
+  { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'Quote provided', icon: '🔄' },
+  { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'Quote provided', icon: '💨' },
   { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: 'Quote provided', icon: '🔍' },
 ]
 
 const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Surrounding areas']
 
-function heroImg(id: string) {
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=80`
-}
-
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-950">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div>
-            <p className="font-bold text-gray-900 text-lg leading-tight">Ellis Mobile Repair</p>
-            <p className="text-xs text-gray-500">Lawn Mower Service · We Come To You</p>
+          <div className="flex items-center gap-3">
+            <Image src="/logo.png" alt="Ellis Mobile Repair Logo" width={48} height={48} className="rounded-full" />
+            <div>
+              <p className="font-bold text-white text-lg leading-tight">Ellis Mobile Repair</p>
+              <p className="text-xs text-gray-400">Lawn Mower Service · We Come To You</p>
+            </div>
           </div>
           <Link
             href="/book"
@@ -51,48 +50,40 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="bg-gray-900 text-white">
-        <div className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div className="text-center lg:text-left">
-            <div className="inline-block bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wide">
-              Mobile Service · We Come To You
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
-              Lawn Mower Tune-Ups &<br />Repair At Your Door
-            </h1>
-            <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto lg:mx-0">
-              No trailers, no hassle. We bring the shop to you. Serving Council Bluffs and Omaha with fast, affordable mower service.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link
-                href="/book"
-                className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors"
-              >
-                Schedule Service
-              </Link>
-              <a
-                href="tel:+17123265651"
-                className="border border-gray-600 hover:border-gray-400 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors"
-              >
-                Call (712) 326-5651
-              </a>
-            </div>
-          </div>
-          <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden shadow-2xl">
-            <Image
-              src={heroImg('1458245201577-fc8a130b8829')}
-              alt="Lawn mower being serviced"
-              fill
-              className="object-cover"
-              priority
-            />
+      {/* Hero — full banner image, no cropping */}
+      <section className="bg-gray-950">
+        <Image
+          src="/banner.png"
+          alt="Ellis Mobile Repair — Small Engine Repair"
+          width={1200}
+          height={375}
+          className="w-full h-auto"
+          priority
+        />
+        {/* CTA below the banner */}
+        <div className="max-w-4xl mx-auto px-4 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="text-gray-400 text-lg text-center sm:text-left">
+            Serving <span className="text-white font-semibold">Council Bluffs & Omaha</span> — no trailers, no hassle.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+            <Link
+              href="/book"
+              className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors text-center"
+            >
+              Schedule Service
+            </Link>
+            <a
+              href="tel:+17123265651"
+              className="border border-gray-700 hover:border-gray-500 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors text-center"
+            >
+              Call (712) 326-5651
+            </a>
           </div>
         </div>
       </section>
 
       {/* Why Us */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-gray-900">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             {[
@@ -102,8 +93,8 @@ export default function HomePage() {
             ].map(item => (
               <div key={item.title} className="p-6">
                 <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="font-bold text-gray-900 text-lg mb-2">{item.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                <h3 className="font-bold text-white text-lg mb-2">{item.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -111,38 +102,38 @@ export default function HomePage() {
       </section>
 
       {/* Services */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-gray-950">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">Services & Pricing</h2>
-            <p className="text-gray-500">Starting prices listed — final quote given before work begins.</p>
+            <h2 className="text-3xl font-bold text-white mb-3">Services & Pricing</h2>
+            <p className="text-gray-400">Every job is different — we assess your equipment and send you an exact quote before any work begins. No surprises.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {SERVICES.map(s => (
-              <div key={s.name} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 flex items-start gap-4">
+              <div key={s.name} className="bg-gray-900 rounded-2xl border border-gray-800 shadow-sm p-5 flex items-start gap-4">
                 <div className="text-3xl w-10 flex-shrink-0">{s.icon}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-start gap-2">
-                    <p className="font-semibold text-gray-900">{s.name}</p>
-                    <span className="text-green-600 font-bold text-sm whitespace-nowrap">{s.price}</span>
+                    <p className="font-semibold text-white">{s.name}</p>
+                    <span className="text-green-500 font-bold text-sm whitespace-nowrap">{s.price}</span>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">{s.desc}</p>
+                  <p className="text-sm text-gray-400 mt-1">{s.desc}</p>
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-center text-sm text-gray-400 mt-6">Parts additional where applicable. Diagnostic fee may apply for complex issues.</p>
+          <p className="text-center text-sm text-gray-600 mt-6">Parts and travel included in your quote. You approve the price before we start — always.</p>
         </div>
       </section>
 
       {/* Service Area */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-gray-900">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">Service Area</h2>
-          <p className="text-gray-500 mb-8">We currently serve the following areas. Not sure if we cover you? Give us a call.</p>
+          <h2 className="text-3xl font-bold text-white mb-3">Service Area</h2>
+          <p className="text-gray-400 mb-8">We currently serve the following areas. Not sure if we cover you? Give us a call.</p>
           <div className="flex flex-wrap justify-center gap-3">
             {AREAS.map(a => (
-              <span key={a} className="bg-green-50 border border-green-200 text-green-700 font-medium text-sm px-4 py-2 rounded-full">
+              <span key={a} className="bg-green-900/40 border border-green-700 text-green-400 font-medium text-sm px-4 py-2 rounded-full">
                 {a}
               </span>
             ))}
@@ -151,10 +142,10 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-gray-950">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold text-white mb-3">Frequently Asked Questions</h2>
           </div>
           <div className="space-y-4">
             {[
@@ -183,14 +174,14 @@ export default function HomePage() {
                 a: "We send you a quote before any work begins. You'll see the estimated total and can accept or decline — no surprise charges ever.",
               },
             ].map(({ q, a }) => (
-              <details key={q} className="bg-white rounded-2xl border border-gray-200 shadow-sm group">
-                <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-semibold text-gray-900">
+              <details key={q} className="bg-gray-900 rounded-2xl border border-gray-800 shadow-sm group">
+                <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-semibold text-white">
                   {q}
-                  <svg className="w-5 h-5 text-gray-400 flex-shrink-0 ml-3 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-gray-500 flex-shrink-0 ml-3 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <p className="px-5 pb-5 text-gray-500 text-sm leading-relaxed">{a}</p>
+                <p className="px-5 pb-5 text-gray-400 text-sm leading-relaxed">{a}</p>
               </details>
             ))}
           </div>
@@ -198,7 +189,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 bg-gray-900 text-white text-center">
+      <section className="py-16 px-4 bg-gray-900 text-white text-center border-t border-gray-800">
         <div className="max-w-xl mx-auto">
           <h2 className="text-3xl font-bold mb-4">Ready to Book?</h2>
           <p className="text-gray-400 mb-8">Fill out our quick booking form and we'll reach out to confirm your appointment.</p>
@@ -212,7 +203,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-950 text-gray-500 py-8 px-4 text-center text-sm">
+      <footer className="bg-gray-950 border-t border-gray-800 text-gray-500 py-8 px-4 text-center text-sm">
         <p className="font-semibold text-white mb-1">Ellis Mobile Repair</p>
         <p>Council Bluffs, IA · Omaha, NE</p>
         <p className="mt-2">
