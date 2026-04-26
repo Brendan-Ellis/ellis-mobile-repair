@@ -853,6 +853,10 @@ function SquareChargeLink({ selected }: { selected: Booking }) {
     client_id: 'sq0idp-DhkCsL0SXRUm7ci0ovToxA',
     version: '1.3',
     notes: `${selected.name} - ${selected.equipmentType}`,
+    options: {
+      supported_tender_types: ['CREDIT_CARD', 'DEBIT_CARD', 'SQUARE_GIFT_CARD', 'CASH', 'OTHER'],
+      auto_return: false,
+    },
   })
   const url = `square-commerce-v1://payment/create?data=${encodeURIComponent(data)}`
   return (
