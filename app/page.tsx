@@ -24,6 +24,10 @@ const SERVICES = [
   { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'Quote provided', icon: '🔄' },
   { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'Quote provided', icon: '💨' },
   { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: 'Quote provided', icon: '🔍' },
+  { name: 'Trailer Lighting & Wiring', desc: 'Repair or replace trailer lights, wiring harness, and electrical connections', price: 'Quote provided', icon: '💡' },
+  { name: 'Trailer Brakes', desc: 'Inspect, adjust, and replace trailer brake components', price: 'Quote provided', icon: '🛑' },
+  { name: 'Jack Replacement', desc: 'Replace worn or damaged trailer tongue jacks', price: 'Quote provided', icon: '🔧' },
+  { name: 'Axle Replacement', desc: 'Replace trailer axles — straight or torsion', price: 'Quote provided', icon: '🚛' },
 ]
 
 const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Surrounding areas']
