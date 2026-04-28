@@ -16,18 +16,18 @@ export const metadata: Metadata = {
 }
 
 const SERVICES = [
-  { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'Quote provided', icon: '🔧' },
-  { name: 'Oil Change', desc: 'Drain and replace oil, check levels', price: 'Quote provided', icon: '🛢️' },
-  { name: 'Blade Sharpening', desc: 'Remove, sharpen, and rebalance mower blades', price: 'Quote provided', icon: '⚙️' },
-  { name: 'Spark Plug Replacement', desc: 'Replace spark plug(s) for reliable starting', price: 'Quote provided', icon: '⚡' },
-  { name: 'Carburetor Cleaning', desc: 'Clean or rebuild carburetor to fix starting/running issues', price: 'Quote provided', icon: '🔩' },
-  { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'Quote provided', icon: '🔄' },
-  { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'Quote provided', icon: '💨' },
-  { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: 'Quote provided', icon: '🔍' },
-  { name: 'Trailer Lighting & Wiring', desc: 'Repair or replace trailer lights, wiring harness, and electrical connections', price: 'Quote provided', icon: '💡' },
-  { name: 'Trailer Brakes', desc: 'Inspect, adjust, and replace trailer brake components', price: 'Quote provided', icon: '🛑' },
-  { name: 'Jack Replacement', desc: 'Replace worn or damaged trailer tongue jacks', price: 'Quote provided', icon: '🔧' },
-  { name: 'Axle Replacement', desc: 'Replace trailer axles — straight or torsion', price: 'Quote provided', icon: '🚛' },
+  { name: 'Full Tune-Up', desc: 'Oil change, spark plug, air filter, blade sharpen & general inspection', price: 'Starting at $75', icon: '🔧' },
+  { name: 'Oil Change', desc: 'Drain and replace oil, check levels', price: 'Starting at $25', icon: '🛢️' },
+  { name: 'Blade Sharpening', desc: 'Remove, sharpen, and rebalance mower blades', price: 'Starting at $20', icon: '⚙️' },
+  { name: 'Spark Plug Replacement', desc: 'Replace spark plug(s) for reliable starting', price: 'Starting at $15', icon: '⚡' },
+  { name: 'Carburetor Cleaning', desc: 'Clean or rebuild carburetor to fix starting/running issues', price: 'Starting at $50', icon: '🔩' },
+  { name: 'Belt Replacement', desc: 'Replace worn drive or deck belts', price: 'Starting at $45', icon: '🔄' },
+  { name: 'Air Filter Replacement', desc: 'Replace clogged air filter for better performance', price: 'Starting at $15', icon: '💨' },
+  { name: 'Diagnostics & Minor Repair', desc: 'Diagnose issues and handle minor fixes on the spot', price: '$65/hr', icon: '🔍' },
+  { name: 'Trailer Lighting & Wiring', desc: 'Repair or replace trailer lights, wiring harness, and electrical connections', price: 'Starting at $50', icon: '💡' },
+  { name: 'Trailer Brakes', desc: 'Inspect, adjust, and replace trailer brake components', price: 'Starting at $75', icon: '🛑' },
+  { name: 'Jack Replacement', desc: 'Replace worn or damaged trailer tongue jacks', price: 'Starting at $40', icon: '🔧' },
+  { name: 'Axle Replacement', desc: 'Replace trailer axles — straight or torsion', price: 'Starting at $150', icon: '🚛' },
 ]
 
 const AREAS = ['Council Bluffs, IA', 'Omaha, NE', 'Surrounding areas']
