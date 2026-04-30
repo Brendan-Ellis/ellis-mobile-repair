@@ -11,15 +11,6 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
   const { customerId } = await searchParams
 
   const bookings = await prisma.booking.findMany({
-    where: {
-      OR: [
-        { status: 'accepted' },
-        { status: 'in_progress' },
-        { status: 'completed' },
-        { status: 'quote_sent' },
-        { isManual: true },
-      ],
-    },
     orderBy: { createdAt: 'desc' },
     select: {
       id: true, name: true, email: true, phone: true, city: true,

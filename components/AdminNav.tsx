@@ -24,7 +24,7 @@ export function AdminNav() {
         className={`px-5 py-2 rounded-xl text-sm font-semibold transition-colors border
           ${isJobs ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-500 border-gray-200 hover:text-gray-900'}`}
       >
-        Jobs
+        Jobs & Invoicing
       </Link>
       <Link
         href="/admin/customers"

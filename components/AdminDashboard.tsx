@@ -100,12 +100,20 @@ export function AdminDashboard({
                       <p className="text-xs text-gray-400 mt-0.5">Quote: <span className="font-semibold text-green-600">${Number(b.quoteAmount).toFixed(2)}</span></p>
                     )}
                   </div>
-                  <button
-                    onClick={() => setSelected(b)}
-                    className="flex-shrink-0 text-xs font-medium text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors"
-                  >
-                    Manage
-                  </button>
+                  <div className="flex flex-col gap-1.5 items-end flex-shrink-0">
+                    <Link
+                      href="/admin/jobs"
+                      className="text-xs font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap"
+                    >
+                      Build Invoice →
+                    </Link>
+                    <button
+                      onClick={() => setSelected(b)}
+                      className="text-xs font-medium text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors"
+                    >
+                      Quick View
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -322,6 +330,17 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
             <button onClick={save} disabled={saving} className="flex-1 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition-colors disabled:opacity-60">
               {saving ? '…' : 'Save'}
             </button>
+          </div>
+
+          <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm text-center">
+            <p className="text-green-800 font-semibold mb-1">Ready to build an invoice?</p>
+            <p className="text-green-700 text-xs mb-2">Use the Jobs tab to create line items, send a quote, and collect payment.</p>
+            <Link
+              href="/admin/jobs"
+              className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-5 py-2 rounded-xl transition-colors"
+            >
+              Open in Jobs →
+            </Link>
           </div>
 
           <div className="flex gap-3 pt-1 border-t border-gray-100 flex-wrap">

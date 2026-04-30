@@ -54,7 +54,7 @@ type Booking = {
 type Customer = { id: string; name: string; phone: string | null; email: string | null }
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: 'Pending',
+  pending: 'New Request',
   accepted: 'Accepted',
   quote_sent: 'Quote Sent',
   in_progress: 'In Progress',
@@ -243,8 +243,9 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
           onChange={e => setStatusFilter(e.target.value)}
           className="border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-gray-400 bg-white"
         >
-          <option value="all">All Statuses</option>
-          {Object.entries(STATUS_LABELS).map(([v, l]) => (
+          <option value="all">All</option>
+          <option value="pending">New Requests</option>
+          {Object.entries(STATUS_LABELS).filter(([v]) => v !== 'pending').map(([v, l]) => (
             <option key={v} value={v}>{l}</option>
           ))}
         </select>
@@ -331,7 +332,7 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
               <div>
                 <p className="text-xs font-semibold text-gray-500 mb-2">STATUS</p>
                 <div className="flex gap-2 flex-wrap">
-                  {['accepted', 'in_progress', 'completed', 'declined'].map(s => (
+                  {['pending', 'accepted', 'in_progress', 'completed', 'declined'].map(s => (
                     <button
                       key={s}
                       onClick={() => handleStatusChange(s)}
