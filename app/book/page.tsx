@@ -15,9 +15,12 @@ const SERVICES = [
   'Belt Replacement',
   'Air Filter Replacement',
   'Diagnostics & Minor Repair',
+  'Trailer Lighting & Wiring',
+  'Trailer Brakes',
+  'Jack Replacement',
+  'Axle Replacement',
 ]
 
-const CITIES = ['Council Bluffs, IA', 'Omaha, NE', 'Other']
 
 const inputCls = 'w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-400'
 
@@ -74,10 +77,7 @@ export default function BookPage() {
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">City *</label>
-              <select name="city" required className={inputCls}>
-                <option value="">Select your city...</option>
-                {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
+              <input name="city" type="text" required placeholder="e.g. Council Bluffs, Omaha, Underwood..." className={inputCls} />
             </div>
           </div>
 
