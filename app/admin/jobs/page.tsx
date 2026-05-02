@@ -14,7 +14,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
     orderBy: { createdAt: 'desc' },
     select: {
       id: true, name: true, email: true, phone: true, city: true,
-      equipmentType: true, equipmentMake: true, services: true, issues: true,
+      equipmentType: true, equipmentMake: true, engineModel: true, equipmentPhoto: true, services: true, issues: true,
       preferredDate: true, status: true, isManual: true,
       receiptToken: true, receiptSentAt: true, squarePaymentUrl: true,
       quoteToken: true, quoteAmount: true, quoteSentAt: true,

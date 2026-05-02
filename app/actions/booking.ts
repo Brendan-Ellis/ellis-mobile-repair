@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { verifyAdmin } from '@/lib/dal'
 import { notifyAdminNewBooking, sendQuoteEmail, sendSms, notifyAdminQuoteResponse } from '@/lib/notify'
 import { randomBytes } from 'crypto'
+import { put } from '@vercel/blob'
 
 export async function submitBooking(prevState: { error?: string; success?: boolean } | undefined, formData: FormData) {
   const name = formData.get('name') as string
@@ -15,6 +16,8 @@ export async function submitBooking(prevState: { error?: string; success?: boole
   const equipmentType = formData.get('equipmentType') as string
   const equipmentMake = formData.get('equipmentMake') as string
   const equipmentYear = formData.get('equipmentYear') as string
+  const engineModel = formData.get('engineModel') as string
+  const photo = formData.get('photo') as File | null
   const issues = formData.get('issues') as string
   const preferredDate = formData.get('preferredDate') as string
   const services = formData.getAll('services') as string[]
@@ -24,6 +27,16 @@ export async function submitBooking(prevState: { error?: string; success?: boole
   }
   if (services.length === 0) {
     return { error: 'Please select at least one service.' }
+  }
+
+  let equipmentPhoto: string | null = null
+  if (photo && photo.size > 0) {
+    try {
+      const blob = await put(`bookings/${Date.now()}-${photo.name}`, photo, { access: 'public' })
+      equipmentPhoto = blob.url
+    } catch {
+      // Photo upload failed — continue without it
+    }
   }
 
   // Auto-match or create customer record
@@ -37,7 +50,7 @@ export async function submitBooking(prevState: { error?: string; success?: boole
   }
 
   const booking = await prisma.booking.create({
-    data: { name, email, phone, address, city, equipmentType, equipmentMake, equipmentYear, services, issues, preferredDate, customerId: customer.id },
+    data: { name, email, phone, address, city, equipmentType, equipmentMake, equipmentYear, engineModel: engineModel || null, equipmentPhoto, services, issues, preferredDate, customerId: customer.id },
   })
 
   await notifyAdminNewBooking(booking)

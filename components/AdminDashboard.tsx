@@ -217,6 +217,16 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
           <div className="bg-gray-50 rounded-xl p-4 text-sm space-y-1">
             <p><span className="text-gray-400">Address:</span> <span className="text-gray-700">{booking.address}, {booking.city}</span></p>
             <p><span className="text-gray-400">Equipment:</span> <span className="text-gray-700">{booking.equipmentType}{booking.equipmentMake ? ` · ${booking.equipmentMake}` : ''}{booking.equipmentYear ? ` (${booking.equipmentYear})` : ''}</span></p>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(booking as any).engineModel && (
+              <p><span className="text-gray-400">Engine:</span> <span className="text-gray-700">{(booking as any).engineModel}</span></p>
+            )}
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(booking as any).equipmentPhoto && (
+              <a href={(booking as any).equipmentPhoto} target="_blank" rel="noreferrer" className="inline-block mt-2">
+                <img src={(booking as any).equipmentPhoto} alt="Equipment photo" className="rounded-lg border border-gray-200 max-h-36 object-cover" />
+              </a>
+            )}
             <p><span className="text-gray-400">Preferred date:</span> <span className="text-gray-700">{booking.preferredDate}</span></p>
             <p><span className="text-gray-400">Services:</span> <span className="text-gray-700">{booking.services.join(', ')}</span></p>
             <p><span className="text-gray-400">Issue:</span> <span className="text-gray-700 italic">"{booking.issues}"</span></p>

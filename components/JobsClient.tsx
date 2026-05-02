@@ -22,6 +22,8 @@ type Booking = {
   city: string
   equipmentType: string
   equipmentMake: string | null
+  engineModel: string | null
+  equipmentPhoto: string | null
   services: string[]
   issues: string
   preferredDate: string
@@ -309,6 +311,12 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                 <div>
                   <p className="text-xs text-gray-400">Equipment</p>
                   <p className="font-medium text-gray-800">{selected.equipmentType}{selected.equipmentMake ? ` — ${selected.equipmentMake}` : ''}</p>
+                  {selected.engineModel && <p className="text-xs text-gray-500 mt-0.5">Engine: {selected.engineModel}</p>}
+                  {selected.equipmentPhoto && (
+                    <a href={selected.equipmentPhoto} target="_blank" rel="noreferrer" className="inline-block mt-1">
+                      <img src={selected.equipmentPhoto} alt="Equipment photo" className="rounded-lg border border-gray-200 max-h-40 object-cover" />
+                    </a>
+                  )}
                 </div>
                 <div>
                   <p className="text-xs text-gray-400">Preferred Date</p>

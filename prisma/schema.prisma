@@ -26,8 +26,10 @@ model Booking {
   city          String
   // Equipment
   equipmentType String
-  equipmentMake String?
-  equipmentYear String?
+  equipmentMake  String?
+  equipmentYear  String?
+  engineModel    String?
+  equipmentPhoto String?
   // Job
   services      String[] // list of selected services
   issues        String   // free text description

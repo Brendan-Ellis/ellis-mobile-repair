@@ -106,6 +106,21 @@ export default function BookPage() {
                 <input name="equipmentYear" type="text" placeholder="e.g. 2018" className={inputCls} />
               </div>
             </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Engine Model / Serial Number</label>
+              <input name="engineModel" type="text" placeholder="e.g. Briggs &amp; Stratton 550E, OHV190, or serial # on engine sticker" className={inputCls} />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Equipment Photo (optional)</label>
+              <input
+                name="photo"
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer"
+              />
+              <p className="text-xs text-gray-400 mt-1">Take a photo of your engine tag or the full machine so we know exactly what we're working on.</p>
+            </div>
           </div>
 
           {/* Services */}
