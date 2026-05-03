@@ -13,6 +13,7 @@ export interface LineItem {
   qty: number
   unitPrice: number
   total: number
+  cost?: number // your parts/material cost — not shown to customer
 }
 
 function cuid() { return randomBytes(12).toString('hex') }
@@ -72,6 +73,7 @@ export async function saveQuoteLineItems(
   const taxAmount = Math.round(taxable * (taxRate / 100) * 100) / 100
   const grandTotal = taxable + taxAmount
 
+  const token = booking.quoteToken ?? randomBytes(32).toString('hex')
   await prisma.booking.update({
     where: { id: bookingId },
     data: {
@@ -79,9 +81,12 @@ export async function saveQuoteLineItems(
       subtotal, discountAmount: discount || null, discountNote: discountNote || null,
       taxRate, taxAmount, grandTotal,
       quoteNotes: quoteNotes || null,
+      quoteToken: token,
+      quoteAmount: grandTotal,
     },
   })
   revalidatePath('/admin/jobs')
+  return token
 }
 
 export async function sendLineItemQuote(bookingId: string) {
@@ -89,7 +94,7 @@ export async function sendLineItemQuote(bookingId: string) {
   const booking = await prisma.booking.findUniqueOrThrow({ where: { id: bookingId } })
   if (!booking.grandTotal) throw new Error('Build the quote first.')
 
-  const token = randomBytes(32).toString('hex')
+  const token = booking.quoteToken ?? randomBytes(32).toString('hex')
   await prisma.booking.update({
     where: { id: bookingId },
     data: {
@@ -103,27 +108,32 @@ export async function sendLineItemQuote(bookingId: string) {
     },
   })
 
-  await sendQuoteEmail({
-    name: booking.name,
-    email: booking.email,
-    services: booking.services,
-    preferredDate: booking.preferredDate,
-    quoteAmount: booking.grandTotal,
-    quoteMessage: booking.quoteNotes ?? '',
-    quoteToken: token,
-    lineItems: booking.lineItems as LineItem[] | null,
-    subtotal: booking.subtotal,
-    discountAmount: booking.discountAmount,
-    discountNote: booking.discountNote,
-    taxRate: booking.taxRate,
-    taxAmount: booking.taxAmount,
-    grandTotal: booking.grandTotal,
-  })
+  if (booking.email) {
+    await sendQuoteEmail({
+      name: booking.name,
+      email: booking.email,
+      services: booking.services,
+      preferredDate: booking.preferredDate,
+      quoteAmount: booking.grandTotal,
+      quoteMessage: booking.quoteNotes ?? '',
+      quoteToken: token,
+      lineItems: booking.lineItems as LineItem[] | null,
+      subtotal: booking.subtotal,
+      discountAmount: booking.discountAmount,
+      discountNote: booking.discountNote,
+      taxRate: booking.taxRate,
+      taxAmount: booking.taxAmount,
+      grandTotal: booking.grandTotal,
+    }).catch(() => {})
+  }
 
-  const smsBody = `Hi ${booking.name}, Ellis Mobile Repair sent you a quote for $${booking.grandTotal.toFixed(2)}. View: ${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://www.ellismobilerepair.com'}/quote/${token}`
-  sendSms(booking.phone, smsBody).catch(() => {})
+  if (booking.phone) {
+    const smsBody = `Hi ${booking.name}, Ellis Mobile Repair sent you a quote for $${booking.grandTotal.toFixed(2)}. View: ${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://www.ellismobilerepair.com'}/quote/${token}`
+    sendSms(booking.phone, smsBody).catch(() => {})
+  }
 
   revalidatePath('/admin/jobs')
+  return token
 }
 
 export async function sendReceipt(bookingId: string) {

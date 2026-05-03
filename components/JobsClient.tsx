@@ -74,7 +74,7 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 function newLineItem(): LineItem {
-  return { id: Math.random().toString(36).slice(2), description: '', qty: 1, unitPrice: 0, total: 0 }
+  return { id: Math.random().toString(36).slice(2), description: '', qty: 1, unitPrice: 0, total: 0, cost: 0 }
 }
 
 export function JobsClient({ bookings, customers, preselectedCustomerId }: { bookings: Booking[]; customers: Customer[]; preselectedCustomerId?: string }) {
@@ -140,11 +140,13 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
 
   // Computed totals
   const subtotal = lineItems.reduce((s, i) => s + i.total, 0)
+  const totalCost = lineItems.reduce((s, i) => s + (i.cost ?? 0), 0)
   const discountAmt = parseFloat(discount) || 0
   const taxRate = taxOverride !== '' ? parseFloat(taxOverride) : (selected ? autoTaxRate(selected.city) : 0)
   const taxable = subtotal - discountAmt
   const taxAmt = Math.round(taxable * (taxRate / 100) * 100) / 100
   const grandTotal = taxable + taxAmt
+  const profit = grandTotal - totalCost
 
   const filtered = useMemo(() => {
     return bookings.filter(b => {
@@ -160,7 +162,7 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
     if (!selected) return
     startTransition(async () => {
       await saveQuoteLineItems(selected.id, lineItems, discountAmt || null, discountNote, taxOverride !== '' ? parseFloat(taxOverride) : null, quoteNotes)
-      showToast('Quote saved!')
+      showToast('Quote saved! Use Copy Link to share with customer.')
       window.location.reload()
     })
   }
@@ -369,6 +371,7 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                           <th className="px-2 py-2 text-center text-gray-500 font-medium text-xs w-14">Qty</th>
                           <th className="px-2 py-2 text-right text-gray-500 font-medium text-xs w-20">Unit $</th>
                           <th className="px-2 py-2 text-right text-gray-500 font-medium text-xs w-20">Total</th>
+                          <th className="px-2 py-2 text-right text-orange-400 font-medium text-xs w-20">My Cost</th>
                           <th className="w-8"></th>
                         </tr>
                       </thead>
@@ -421,6 +424,20 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                             </td>
                             <td className="px-2 py-1.5 text-right text-sm font-medium text-gray-800">
                               ${item.total.toFixed(2)}
+                            </td>
+                            <td className="px-2 py-1.5">
+                              <input
+                                type="text"
+                                inputMode="decimal"
+                                value={item.cost === 0 ? '' : (item.cost ?? '')}
+                                onChange={e => {
+                                  const val = e.target.value
+                                  const n = parseFloat(val)
+                                  updateItem(item.id, 'cost', val === '' ? 0 : isNaN(n) ? 0 : n)
+                                }}
+                                placeholder="0.00"
+                                className="w-full text-sm text-right outline-none border-b border-transparent focus:border-orange-300 bg-transparent text-orange-600"
+                              />
                             </td>
                             <td className="px-1 py-1.5">
                               <button onClick={() => setLineItems(prev => prev.filter(i => i.id !== item.id))} className="text-gray-300 hover:text-red-500 text-base leading-none">×</button>
@@ -511,6 +528,16 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                     <div className="flex justify-between font-bold text-gray-900 border-t border-gray-200 pt-1 mt-1">
                       <span>Total</span><span className="text-green-600">${grandTotal.toFixed(2)}</span>
                     </div>
+                    {totalCost > 0 && (
+                      <div className="flex justify-between text-orange-600 text-xs border-t border-gray-100 pt-1 mt-1">
+                        <span>My Cost</span><span>-${totalCost.toFixed(2)}</span>
+                      </div>
+                    )}
+                    {totalCost > 0 && (
+                      <div className="flex justify-between font-bold text-xs border-t border-gray-100 pt-1">
+                        <span>Profit</span><span className={profit >= 0 ? 'text-green-600' : 'text-red-500'}>${profit.toFixed(2)}</span>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -524,10 +551,10 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                   </button>
                   <button
                     onClick={handleSendQuote}
-                    disabled={isPending || lineItems.length === 0 || !selected.email}
+                    disabled={isPending || lineItems.length === 0}
                     className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-40"
                   >
-                    {selected.quoteSentAt ? 'Resend Quote' : 'Send Quote to Customer'}
+                    {selected.quoteSentAt ? 'Resend Quote' : selected.email ? 'Send Quote to Customer' : 'Send Quote via SMS'}
                   </button>
                   {selected.quoteToken && (
                     <>
@@ -537,7 +564,7 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                         rel="noreferrer"
                         className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-sm font-semibold transition-colors"
                       >
-                        Preview Quote
+                        Preview
                       </a>
                       <button
                         onClick={() => {
