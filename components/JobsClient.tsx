@@ -92,6 +92,7 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
 
   // Line item state for selected job
   const [lineItems, setLineItems] = useState<LineItem[]>([])
+  const [unitPriceInputs, setUnitPriceInputs] = useState<Record<string, string>>({})
   const [discount, setDiscount] = useState('')
   const [discountNote, setDiscountNote] = useState('')
   const [taxOverride, setTaxOverride] = useState('')
@@ -408,15 +409,18 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                               <input
                                 type="text"
                                 inputMode="decimal"
-                                value={item.unitPrice === 0 ? '' : item.unitPrice}
+                                value={unitPriceInputs[item.id] !== undefined ? unitPriceInputs[item.id] : (item.unitPrice === 0 ? '' : String(item.unitPrice))}
                                 onChange={e => {
                                   const val = e.target.value
-                                  if (val === '' || val === '.') {
-                                    updateItem(item.id, 'unitPrice', 0)
-                                  } else {
-                                    const n = parseFloat(val)
-                                    if (!isNaN(n)) updateItem(item.id, 'unitPrice', n)
+                                  if (/^(\d*\.?\d*)$/.test(val)) {
+                                    setUnitPriceInputs(prev => ({ ...prev, [item.id]: val }))
                                   }
+                                }}
+                                onBlur={e => {
+                                  const val = e.target.value
+                                  const n = val === '' ? 0 : parseFloat(val)
+                                  updateItem(item.id, 'unitPrice', isNaN(n) ? item.unitPrice : n)
+                                  setUnitPriceInputs(prev => { const next = { ...prev }; delete next[item.id]; return next })
                                 }}
                                 placeholder="0.00"
                                 className="w-full text-sm text-right outline-none border-b border-transparent focus:border-gray-300 bg-transparent"
