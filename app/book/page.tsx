@@ -27,6 +27,7 @@ const inputCls = 'w-full bg-gray-50 border border-gray-200 text-gray-900 rounded
 export default function BookPage() {
   const router = useRouter()
   const [state, action, pending] = useActionState(submitBooking, undefined)
+  const [diagSelected, setDiagSelected] = useState(false)
 
   useEffect(() => {
     if (state?.success) router.push('/book/success')
@@ -129,12 +130,31 @@ export default function BookPage() {
             <p className="text-xs text-gray-400">Select all that apply</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {SERVICES.map(s => (
-                <label key={s} className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors">
-                  <input type="checkbox" name="services" value={s} className="w-4 h-4 accent-green-600" />
-                  <span className="text-sm text-gray-700">{s}</span>
+                <label key={s} className="flex items-start gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors">
+                  <input
+                    type="checkbox"
+                    name="services"
+                    value={s}
+                    className="w-4 h-4 accent-green-600 mt-0.5 flex-shrink-0"
+                    onChange={s === 'Diagnostics & Minor Repair' ? e => setDiagSelected(e.target.checked) : undefined}
+                  />
+                  <span className="text-sm text-gray-700">
+                    {s}
+                    {s === 'Diagnostics & Minor Repair' && (
+                      <span className="block text-xs text-amber-600 font-medium mt-0.5">$65 diagnostic fee — see note below</span>
+                    )}
+                  </span>
                 </label>
               ))}
             </div>
+            {diagSelected && (
+              <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 mt-1">
+                <span className="text-amber-500 text-lg leading-none flex-shrink-0">⚠️</span>
+                <p className="text-xs text-amber-800 leading-relaxed">
+                  <strong>Diagnostic visits include a $65 fee</strong> that is charged regardless of whether you decide to proceed with repairs. This covers our time and travel to diagnose your equipment. If you approve the repair, the diagnostic fee is part of the overall job cost — you'll receive a full quote before any repair work begins.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Issues & Date */}
