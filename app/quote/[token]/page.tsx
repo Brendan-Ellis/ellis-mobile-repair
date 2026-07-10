@@ -89,12 +89,12 @@ export default async function QuotePage({
             {booking.quoteResponse === 'accepted' ? (
               <>
                 <div className="bg-green-50 border border-green-200 rounded-2xl p-6 text-center">
-                  <div className="text-5xl mb-3">{paid ? '🎉' : '✅'}</div>
+                  <div className="text-5xl mb-3">{booking.isPaid || paid ? '🎉' : '✅'}</div>
                   <h1 className="text-xl font-bold text-gray-900 mb-1">
-                    {paid ? 'Payment Received!' : 'Quote Accepted!'}
+                    {booking.isPaid || paid ? 'Payment Received!' : 'Quote Accepted!'}
                   </h1>
                   <p className="text-gray-500 text-sm">
-                    {paid
+                    {booking.isPaid || paid
                       ? 'Thank you! Your payment has been processed.'
                       : "We'll be in touch shortly to confirm your appointment."}
                   </p>
