@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { Booking } from '@/app/generated/prisma/client'
-import { updateBookingStatus, updateBookingDetails, markInvoiceSent, deleteBooking, sendQuote } from '@/app/actions/booking'
+import { updateBookingStatus, updateBookingDetails, markInvoiceSent, deleteBooking } from '@/app/actions/booking'
 
 const STATUS_LABELS: Record<string, string> = {
   pending: 'Pending',
@@ -130,28 +130,12 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
   const router = useRouter()
   const [, startTransition] = useTransition()
   const [adminNotes, setAdminNotes] = useState(booking.adminNotes ?? '')
-  const [partsUsed, setPartsUsed] = useState(booking.partsUsed ?? '')
-  const [laborHours, setLaborHours] = useState(String(booking.laborHours ?? ''))
-  const [price, setPrice] = useState(String(booking.price ?? ''))
   const [saving, setSaving] = useState(false)
-
-  // Quote form state
-  const [showQuoteForm, setShowQuoteForm] = useState(false)
-  const [quoteAmount, setQuoteAmount] = useState(String(booking.quoteAmount ?? ''))
-  const [quoteMessage, setQuoteMessage] = useState(booking.quoteMessage ?? '')
-  const [sendingQuote, setSendingQuote] = useState(false)
-  const [quoteSent, setQuoteSent] = useState(false)
 
   function save() {
     setSaving(true)
     startTransition(async () => {
-      await updateBookingDetails(
-        booking.id,
-        adminNotes,
-        partsUsed,
-        laborHours ? parseFloat(laborHours) : null,
-        price ? parseFloat(price) : null,
-      )
+      await updateBookingDetails(booking.id, adminNotes, '', null, null)
       router.refresh()
       setSaving(false)
       onClose()
@@ -180,18 +164,6 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
       await deleteBooking(booking.id)
       router.refresh()
       onClose()
-    })
-  }
-
-  function handleSendQuote() {
-    if (!quoteAmount || parseFloat(quoteAmount) <= 0) return alert('Enter a valid quote amount.')
-    setSendingQuote(true)
-    startTransition(async () => {
-      await sendQuote(booking.id, parseFloat(quoteAmount), quoteMessage)
-      router.refresh()
-      setSendingQuote(false)
-      setQuoteSent(true)
-      setShowQuoteForm(false)
     })
   }
 
@@ -232,71 +204,6 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
             <p><span className="text-gray-400">Issue:</span> <span className="text-gray-700 italic">"{booking.issues}"</span></p>
           </div>
 
-          {/* Quote section */}
-          <div className="border border-gray-200 rounded-xl overflow-hidden">
-            <div className="bg-gray-50 px-4 py-3 flex items-center justify-between">
-              <span className="text-sm font-semibold text-gray-700">Quote</span>
-              {booking.quoteResponse ? (
-                <span className={`text-xs font-medium px-2 py-1 rounded-full ${booking.quoteResponse === 'accepted' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
-                  Customer {booking.quoteResponse}
-                </span>
-              ) : booking.quoteSentAt ? (
-                <span className="text-xs text-orange-600 font-medium">Awaiting response</span>
-              ) : null}
-            </div>
-            <div className="p-4">
-              {quoteSent ? (
-                <p className="text-sm text-green-600 font-medium">Quote sent successfully!</p>
-              ) : booking.quoteSentAt && !showQuoteForm ? (
-                <div className="space-y-2 text-sm">
-                  <p><span className="text-gray-400">Amount:</span> <span className="font-bold text-green-600">${Number(booking.quoteAmount).toFixed(2)}</span></p>
-                  {booking.quoteMessage && <p className="text-gray-600 italic">"{booking.quoteMessage}"</p>}
-                  <button onClick={() => setShowQuoteForm(true)} className="text-xs text-blue-600 hover:text-blue-700 font-medium mt-1">
-                    Resend / Update Quote
-                  </button>
-                </div>
-              ) : showQuoteForm || !booking.quoteSentAt ? (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">Quote Amount ($) *</label>
-                    <input
-                      type="number"
-                      value={quoteAmount}
-                      onChange={e => setQuoteAmount(e.target.value)}
-                      min="0" step="0.01"
-                      placeholder="75.00"
-                      className={inputCls}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">Message to Customer (optional)</label>
-                    <textarea
-                      rows={3}
-                      value={quoteMessage}
-                      onChange={e => setQuoteMessage(e.target.value)}
-                      placeholder="e.g. Includes oil change and blade sharpening. Parts may be extra if carburetor needs rebuild."
-                      className={inputCls + ' resize-none'}
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleSendQuote}
-                      disabled={sendingQuote}
-                      className="flex-1 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition-colors disabled:opacity-60"
-                    >
-                      {sendingQuote ? 'Sending…' : 'Send Quote via Email & SMS'}
-                    </button>
-                    {showQuoteForm && (
-                      <button onClick={() => setShowQuoteForm(false)} className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-500 text-sm hover:bg-gray-50">
-                        Cancel
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          </div>
-
           {/* Status */}
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-2">Update Status</label>
@@ -314,22 +221,10 @@ function BookingModal({ booking, onClose }: { booking: Booking; onClose: () => v
             </div>
           </div>
 
-          {/* Job details */}
-          <div className="space-y-3">
-            <label className="block text-xs font-medium text-gray-600">Admin Notes</label>
+          {/* Admin Notes */}
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">Admin Notes</label>
             <textarea rows={3} value={adminNotes} onChange={e => setAdminNotes(e.target.value)} className={inputCls + ' resize-none'} placeholder="Internal notes..." />
-            <label className="block text-xs font-medium text-gray-600">Parts Used</label>
-            <input type="text" value={partsUsed} onChange={e => setPartsUsed(e.target.value)} className={inputCls} placeholder="e.g. Spark plug, oil filter..." />
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Labor Hours</label>
-                <input type="number" value={laborHours} onChange={e => setLaborHours(e.target.value)} min="0" step="0.25" className={inputCls} placeholder="1.5" />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Total Price ($)</label>
-                <input type="number" value={price} onChange={e => setPrice(e.target.value)} min="0" step="0.01" className={inputCls} placeholder="75.00" />
-              </div>
-            </div>
           </div>
 
           {/* Actions */}
