@@ -28,7 +28,7 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
   })
 
   const customers = await prisma.customer.findMany({
-    select: { id: true, name: true, phone: true, email: true },
+    select: { id: true, name: true, phone: true, email: true, address: true, city: true },
     orderBy: { name: 'asc' },
   })
 

@@ -53,7 +53,7 @@ type Booking = {
   createdAt: Date
 }
 
-type Customer = { id: string; name: string; phone: string | null; email: string | null }
+type Customer = { id: string; name: string; phone: string | null; email: string | null; address: string | null; city: string | null }
 
 const STATUS_LABELS: Record<string, string> = {
   pending: 'New Request',
@@ -853,9 +853,13 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
                     <label className="text-xs text-gray-500">Email</label>
                     <input name="email" type="email" defaultValue={selectedCustomer?.email ?? ''} key={selectedCustomer?.id + '-email'} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm mt-0.5 outline-none focus:border-gray-400" />
                   </div>
+                  <div className="col-span-2">
+                    <label className="text-xs text-gray-500">Street Address</label>
+                    <input name="address" defaultValue={selectedCustomer?.address ?? ''} key={selectedCustomer?.id + '-address'} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm mt-0.5 outline-none focus:border-gray-400" />
+                  </div>
                   <div>
                     <label className="text-xs text-gray-500">City</label>
-                    <input name="city" className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm mt-0.5 outline-none focus:border-gray-400" />
+                    <input name="city" defaultValue={selectedCustomer?.city ?? ''} key={selectedCustomer?.id + '-city'} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm mt-0.5 outline-none focus:border-gray-400" />
                   </div>
                   <div>
                     <label className="text-xs text-gray-500">Equipment Type</label>

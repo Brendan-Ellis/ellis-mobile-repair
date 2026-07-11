@@ -9,9 +9,28 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const params = await searchParams
   const statusFilter = params.status ?? 'all'
 
-  const bookings = await prisma.booking.findMany({
+  const rawBookings = await prisma.booking.findMany({
     where: statusFilter !== 'all' ? { status: statusFilter } : undefined,
     orderBy: { createdAt: 'desc' },
+  })
+
+  // Prefer the linked customer's address/city — bookings created before
+  // customer info was filled in (e.g. manual jobs) can have blank/stale
+  // address data, while the customer record is the source of truth.
+  const customerIds = [...new Set(rawBookings.map(b => b.customerId).filter((id): id is string => !!id))]
+  const customers = await prisma.customer.findMany({
+    where: { id: { in: customerIds } },
+    select: { id: true, address: true, city: true },
+  })
+  const customerById = new Map(customers.map(c => [c.id, c]))
+
+  const bookings = rawBookings.map(b => {
+    const customer = b.customerId ? customerById.get(b.customerId) : undefined
+    return {
+      ...b,
+      address: customer?.address || b.address,
+      city: customer?.city || b.city,
+    }
   })
 
   const counts = await prisma.booking.groupBy({
