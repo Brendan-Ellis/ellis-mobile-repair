@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         where: {
           name: { contains: namePart, mode: 'insensitive' },
           isPaid: false,
-          OR: [{ status: 'accepted' }, { status: 'in_progress' }, { status: 'quote_sent' }],
+          OR: [{ status: 'accepted' }, { status: 'in_progress' }, { status: 'quote_sent' }, { status: 'quote' }],
         },
         orderBy: { createdAt: 'desc' },
       })

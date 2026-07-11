@@ -8,6 +8,7 @@ import { updateBookingStatus, updateBookingDetails, markInvoiceSent, deleteBooki
 
 const STATUS_LABELS: Record<string, string> = {
   pending: 'Pending',
+  quote: 'Quote',
   quote_sent: 'Quote Sent',
   accepted: 'Accepted',
   in_progress: 'In Progress',
@@ -17,6 +18,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-700',
+  quote: 'bg-indigo-100 text-indigo-700',
   quote_sent: 'bg-orange-100 text-orange-700',
   accepted: 'bg-blue-100 text-blue-700',
   in_progress: 'bg-purple-100 text-purple-700',
@@ -24,7 +26,7 @@ const STATUS_COLORS: Record<string, string> = {
   declined: 'bg-red-100 text-red-700',
 }
 
-const FILTERS = ['all', 'pending', 'quote_sent', 'accepted', 'in_progress', 'completed', 'declined']
+const FILTERS = ['all', 'pending', 'quote', 'quote_sent', 'accepted', 'in_progress', 'completed', 'declined']
 
 export function AdminDashboard({
   bookings,

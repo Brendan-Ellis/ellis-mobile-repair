@@ -57,6 +57,7 @@ type Customer = { id: string; name: string; phone: string | null; email: string 
 
 const STATUS_LABELS: Record<string, string> = {
   pending: 'New Request',
+  quote: 'Quote',
   accepted: 'Accepted',
   quote_sent: 'Quote Sent',
   in_progress: 'In Progress',
@@ -66,6 +67,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-800',
+  quote: 'bg-indigo-100 text-indigo-800',
   accepted: 'bg-blue-100 text-blue-800',
   quote_sent: 'bg-purple-100 text-purple-800',
   in_progress: 'bg-orange-100 text-orange-800',
@@ -343,7 +345,7 @@ export function JobsClient({ bookings, customers, preselectedCustomerId }: { boo
               <div>
                 <p className="text-xs font-semibold text-gray-500 mb-2">STATUS</p>
                 <div className="flex gap-2 flex-wrap">
-                  {['pending', 'accepted', 'in_progress', 'completed', 'declined'].map(s => (
+                  {['pending', 'quote', 'accepted', 'in_progress', 'completed', 'declined'].map(s => (
                     <button
                       key={s}
                       onClick={() => handleStatusChange(s)}

@@ -48,7 +48,7 @@ export async function createManualJob(formData: FormData) {
       name, phone, email, address, city,
       equipmentType, equipmentMake: equipmentMake || null,
       services: [], issues: issues || 'Manual job', preferredDate,
-      status: 'accepted',
+      status: 'quote',
       isManual: true,
       customerId: customer.id,
     },
